@@ -217,8 +217,8 @@ BOOL LImageProc::WindowGray() {
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
 	BYTE *sd = m_pSrcImg->m_pBits;
 	BYTE *dd = m_pDestImg->m_pBits;
-	int L = 50;
-	int U = 180;
+	int L = 100;
+	int U = 220;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j++)
@@ -239,3 +239,94 @@ BOOL LImageProc::WindowGray() {
 	}
 	return TRUE;
 }
+
+// 折现变换
+BOOL LImageProc::PolylineGray() {
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
+	BYTE *sd = m_pSrcImg->m_pBits;
+	BYTE *dd = m_pDestImg->m_pBits;
+	int x1 = 130, y1 = 50, x2 = 150, y2 = 200;
+	for (int i = 0; i < m_pDestImg->m_Height; i++)
+	{
+		for (int j = 0; j < m_pDestImg->m_Width * 3; j++)
+		{
+			int x = sd[i*m_pDestImg->m_WidthBytes + j];
+			if (x < x1)
+				dd[i*m_pDestImg->m_WidthBytes + j] = y1 * x / x1;
+			else if (x >= x1 && x <= x2)
+				dd[i*m_pDestImg->m_WidthBytes + j] = (y2 - y1)*(x - x1) / (x2 - x1) + y1;
+			else
+				dd[i*m_pDestImg->m_WidthBytes + j] = (255 - y2)*(x - x2) / (255 - x2) + y2;
+		}
+	}
+	return TRUE;
+}
+
+// 灰度均衡化
+BOOL LImageProc::GrayEqual() {
+
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
+	BYTE *sd = m_pSrcImg->m_pBits;
+	BYTE *dd = m_pDestImg->m_pBits;
+	float prR[256], prG[256], prB[256];
+	// 获取R G B的灰级概率
+	GetHist(prR, prG, prB);
+	// 进行均衡化处理 
+	float tempR[256], tempG[256], tempB[256];
+	int newR[256], newG[256], newB[256];
+	for (int i = 0; i < 256; i++)
+	{
+		if (i == 0)
+		{
+			tempR[0] = prR[0];
+			tempG[0] = prG[0];
+			tempB[0] = prB[0];
+		}
+		else
+		{
+			tempR[i] = tempR[i - 1] + prR[i];
+			tempG[i] = tempG[i - 1] + prG[i];
+			tempB[i] = tempB[i - 1] + prB[i];
+		}
+		newR[i] = (int)(255.0f * tempR[i] + 0.5f);
+		newG[i] = (int)(255.0f * tempG[i] + 0.5f);
+		newB[i] = (int)(255.0f * tempB[i] + 0.5f);
+	}
+	//赋值回图像
+	for (int i = 0; i < m_pDestImg->m_Height; i++)
+	{
+		for (int j = 0; j < m_pDestImg->m_Width * 3; j += 3)
+		{
+			dd[i*m_pDestImg->m_WidthBytes + j] = newB[sd[i*m_pDestImg->m_WidthBytes + j]];
+			dd[i*m_pDestImg->m_WidthBytes + j + 1] = newG[sd[i*m_pDestImg->m_WidthBytes + j + 1]];
+			dd[i*m_pDestImg->m_WidthBytes + j + 2] = newR[sd[i*m_pDestImg->m_WidthBytes + j + 2]];
+		}
+	}
+	return TRUE;
+}
+
+// 得到直方图（灰级概率Pr)
+void LImageProc::GetHist(float *prR, float *prG, float *prB)
+{
+	BYTE *sd = m_pSrcImg->m_pBits;
+	int counterR[256] = { 0 }, counterG[256] = { 0 }, counterB[256] = { 0 };
+	for (int i = 0; i < m_pSrcImg->m_Height; i++)
+	{
+		for (int j = 0; j < m_pSrcImg->m_Width * 3; j += 3)
+		{
+			counterB[sd[i*m_pSrcImg->m_WidthBytes + j]]++;
+			counterG[sd[i*m_pSrcImg->m_WidthBytes + j + 1]]++;
+			counterR[sd[i*m_pSrcImg->m_WidthBytes + j + 2]]++;
+		}
+	}
+	long long bytes = m_pSrcImg->m_Height*m_pSrcImg->m_Width;
+	for (int i = 0; i < 256; i++)
+	{
+		prR[i] = counterR[i] / (bytes * 1.0f);
+		prG[i] = counterG[i] / (bytes * 1.0f);
+		prB[i] = counterB[i] / (bytes * 1.0f);
+	}
+}
+

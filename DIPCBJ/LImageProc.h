@@ -15,5 +15,10 @@ public:
 	BOOL DoubleThrehold();
 	// 窗口灰度变换
 	BOOL WindowGray();
+	// 折现变换
+	BOOL PolylineGray();
+	BOOL GrayEqual(); 	// 灰度均衡化
+	// 得到直方图（灰级概率Pr)
+	void GetHist(float *prR, float *prG, float *prB);
 };
 
