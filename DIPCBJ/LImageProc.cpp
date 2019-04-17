@@ -461,11 +461,18 @@ BOOL LImageProc::AdaptiveSmooth()
 	int t[9] = { 0 };		//存储临时窗口数据
 	float aver[9] = { 0 };	//灰度级均值
 	float K[9] = { 0 };		//方差
+	int temp = 0;
 	for (int k = 0; k < 3; k++)
-		for (int i = 2; i < height - 2; i++)
+		for (int i = 0; i < height; i++)
 		{
-			for (int j = 2; j < wide - 2; j++)
+			for (int j = 0; j < wide; j++)
 			{
+				// 处理边界的点
+				if (i<2 || j<2 || i>height - 3 || j>wide - 3)
+				{
+					dd[i * m_pDestImg->m_WidthBytes + j * 3 + k] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
+					continue;
+				}
 				// 第一种领域窗口 九宫格
 				t[0] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
 				t[1] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
@@ -476,11 +483,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[6] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
 				t[7] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[8] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				for (int i = 0; i < 9; ++i)
-					aver[0] += (float)t[i];
-				aver[0] /= 9;
-				for (int i = 0; i < 9; ++i)
-					t[0] += t[i] * t[i] - aver[0] * aver[0];
+				temp = 0;
+				for (int ind = 0; ind < 9; ++ind)
+					temp += t[ind];
+				aver[0] = (float)temp / 9;
+				for (int ind = 0; ind < 9; ++ind)
+					K[0] += t[ind] * t[ind] - aver[0] * aver[0];
 
 				// 第二种领域窗口 上两层
 				t[0] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
@@ -490,11 +498,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
 				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[1] += (float)t[i];
-				aver[1] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[1] += t[i] * t[i] - aver[1] * aver[1];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[1] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[1] += t[ind] * t[ind] - aver[1] * aver[1];
 
 				// 第三种领域窗口 左两层
 				t[0] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
@@ -504,11 +513,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
 				t[6] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[2] += (float)t[i];
-				aver[2] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[2] += t[i] * t[i] - aver[2] * aver[2];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[2] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[2] += t[ind] * t[ind] - aver[2] * aver[2];
 
 				// 第四种领域窗口 下两层
 				t[0] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
@@ -518,11 +528,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[(i + 2)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
 				t[6] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[3] += (float)t[i];
-				aver[3] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[3] += t[i] * t[i] - aver[3] * aver[3];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[3] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[3] += t[ind] * t[ind] - aver[3] * aver[3];
 
 				// 第五种领域窗口 右两层
 				t[0] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
@@ -532,11 +543,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
 				t[6] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[4] += (float)t[i];
-				aver[4] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[4] += t[i] * t[i] - aver[4] * aver[4];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[4] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[4] += t[ind] * t[ind] - aver[4] * aver[4];
 
 				// 第六种领域窗口	右上六边形
 				t[0] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
@@ -546,11 +558,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
 				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[5] += (float)t[i];
-				aver[5] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[5] += t[i] * t[i] - aver[5] * aver[5];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[5] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[5] += t[ind] * t[ind] - aver[5] * aver[5];
 
 				// 第七种领域窗口	左上六边形
 				t[0] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
@@ -560,11 +573,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
 				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[6] += (float)t[i];
-				aver[6] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[6] += t[i] * t[i] - aver[6] * aver[6];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[6] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[6] += t[ind] * t[ind] - aver[6] * aver[6];
 
 				// 第八种领域窗口	左下六边形
 				t[0] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
@@ -574,11 +588,12 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
 				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[7] += (float)t[i];
-				aver[7] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[7] += t[i] * t[i] - aver[7] * aver[7];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[7] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[7] += t[ind] * t[ind] - aver[7] * aver[7];
 
 				// 第九种领域窗口	右下六边形
 				t[0] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
@@ -588,27 +603,30 @@ BOOL LImageProc::AdaptiveSmooth()
 				t[4] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
 				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
 				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				for (int i = 0; i < 7; ++i)
-					aver[8] += (float)t[i];
-				aver[8] /= 9;
-				for (int i = 0; i < 7; ++i)
-					t[8] += t[i] * t[i] - aver[8] * aver[8];
+				temp = 0;
+				for (int ind = 0; ind < 7; ++ind)
+					temp += t[ind];
+				aver[8] = (float)temp / 7;
+				for (int ind = 0; ind < 7; ++ind)
+					K[8] += t[ind] * t[ind] - aver[8] * aver[8];
+
 				//求方差最小的近邻区域
 				float kmin = K[0];
 				float amin = 0;
-				for (int i = 0; i < 9; ++i)
+				for (int n = 0; n < 9; ++n)
 				{
-					if (kmin > K[i])
+					if (kmin > K[n])
 					{
-						kmin = K[i];
-						amin = aver[i];
+						kmin = K[n];
+						amin = aver[n];
 					}
-					dd[j* wide * 3 + i * 3 + k] = (int)(amin + 0.5);
 				}
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + k] = (int)(amin + 0.5);
 			}
 		}
 	return TRUE;
 }
+
 //十字形中值滤波
 BOOL LImageProc::CrossFilter()
 {
