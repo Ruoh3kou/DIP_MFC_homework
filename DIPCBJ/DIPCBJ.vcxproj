@@ -183,6 +183,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CDlgNNMid.h" />
     <ClInclude Include="CDlgRotate.h" />
     <ClInclude Include="CDlgStretch.h" />
     <ClInclude Include="CDlgTranslate.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CDlgNNMid.cpp" />
     <ClCompile Include="CDlgRotate.cpp" />
     <ClCompile Include="CDlgStretch.cpp" />
     <ClCompile Include="CDlgTranslate.cpp" />

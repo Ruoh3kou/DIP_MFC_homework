@@ -2,7 +2,8 @@
 #include "LImageProc.h"
 #include "math.h"
 #include "LImage.h"
-
+#include <vector>
+#include <algorithm>
 LImageProc::LImageProc()
 {
 	m_pSrcImg = m_pDestImg = NULL;
@@ -628,17 +629,150 @@ BOOL LImageProc::AdaptiveSmooth()
 }
 
 //十字形中值滤波
-BOOL LImageProc::CrossFilter()
+BOOL LImageProc::CrossFilter(int n)
 {
-	return 0;
+	if (!ImageIsValid()) return FALSE;
+	if (n < 3 || n % 2 != 1)
+		return FALSE;
+	int wide = m_pDestImg->m_Width;
+	int height = m_pDestImg->m_Height;
+	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
+	BYTE *sd = m_pSrcImg->m_pBits;
+	BYTE *dd = m_pDestImg->m_pBits;
+
+	int n2 = 0;
+	if (n >= 3 && n % 2 == 1)
+		n2 = (n - 1) / 2;
+	int nn = n + n - 1;
+	int mid = (nn - 1) / 2;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < wide; j++)
+		{
+			// 处理边界的点
+			if (i < n2 || j < n2 || i >= height - n2 || j >= wide - n2)
+			{
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = sd[i * m_pDestImg->m_WidthBytes + j * 3];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 1];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 2];
+				continue;
+			}
+			std::vector<int> value1;
+			std::vector<int> value2;
+			std::vector<int> value3;
+			for (int ii = i - n2; ii <= i + n2; ii++)
+			{
+				value1.push_back(sd[ii*m_pDestImg->m_WidthBytes + j * 3]);
+				value2.push_back(sd[ii*m_pDestImg->m_WidthBytes + j * 3 + 1]);
+				value3.push_back(sd[ii*m_pDestImg->m_WidthBytes + j * 3 + 2]);
+			}
+			for (int jj = j - n2; jj <= j + n2; jj++) {
+				value1.push_back(sd[i*m_pDestImg->m_WidthBytes + jj * 3]);
+				value2.push_back(sd[i*m_pDestImg->m_WidthBytes + jj * 3 + 1]);
+				value3.push_back(sd[i*m_pDestImg->m_WidthBytes + jj * 3 + 2]);
+			}
+			std::sort(value1.begin(), value1.end());
+			std::sort(value2.begin(), value2.end());
+			std::sort(value3.begin(), value3.end());
+			dd[i*m_pDestImg->m_WidthBytes + j * 3] = value1[mid];
+			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = value2[mid];
+			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = value3[mid];
+		}
+	}
+	return TRUE;
 }
 //N*N最大值滤波
-BOOL LImageProc::NNMaxFilter()
+BOOL LImageProc::NNMaxFilter(int n)
 {
-	return 0;
+	if (!ImageIsValid()) return FALSE;
+	if (n < 3 || n % 2 != 1)
+		return FALSE;
+	int wide = m_pDestImg->m_Width;
+	int height = m_pDestImg->m_Height;
+	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
+	BYTE *sd = m_pSrcImg->m_pBits;
+	BYTE *dd = m_pDestImg->m_pBits;
+
+	int n2 = 0;
+	if (n >= 3 && n % 2 == 1)
+		n2 = (n - 1) / 2;
+	int nn = n * n;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < wide; j++)
+		{
+			// 处理边界的点
+			if (i < n2 || j < n2 || i >= height - n2 || j >= wide - n2)
+			{
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = sd[i * m_pDestImg->m_WidthBytes + j * 3];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 1];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 2];
+				continue;
+			}
+			std::vector<int> value1;
+			std::vector<int> value2;
+			std::vector<int> value3;
+			for (int ii = i - n2; ii <= i + n2; ii++)
+				for (int jj = j - n2; jj <= j + n2; jj++) {
+					value1.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3]);
+					value2.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 1]);
+					value3.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 2]);
+				}
+			std::sort(value1.begin(), value1.end());
+			std::sort(value2.begin(), value2.end());
+			std::sort(value3.begin(), value3.end());
+			dd[i*m_pDestImg->m_WidthBytes + j * 3] = value1.front();
+			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = value2.front();
+			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = value3.front();
+		}
+	}
+	return TRUE;
 }
 //N*N中值滤波
-BOOL LImageProc::NNMedFilter()
+BOOL LImageProc::NNMedFilter(int n)
 {
-	return 0;
+	if (!ImageIsValid()) return FALSE;
+	if (n < 3 || n % 2 != 1)
+		return FALSE;
+	int wide = m_pDestImg->m_Width;
+	int height = m_pDestImg->m_Height;
+	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
+	BYTE *sd = m_pSrcImg->m_pBits;
+	BYTE *dd = m_pDestImg->m_pBits;
+
+	int n2 = 0;
+	if (n >= 3 && n % 2 == 1)
+		n2 = (n - 1) / 2;
+	int nn = n * n;
+	int mid = (nn - 1) / 2;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < wide; j++)
+		{
+			// 处理边界的点
+			if (i < n2 || j < n2 || i >= height - n2 || j >= wide - n2)
+			{
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = sd[i * m_pDestImg->m_WidthBytes + j * 3];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 1];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 2];
+				continue;
+			}
+			std::vector<int> value1;
+			std::vector<int> value2;
+			std::vector<int> value3;
+			for (int ii = i - n2; ii <= i + n2; ii++)
+				for (int jj = j - n2; jj <= j + n2; jj++) {
+					value1.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3]);
+					value2.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 1]);
+					value3.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 2]);
+				}
+			std::sort(value1.begin(), value1.end());
+			std::sort(value2.begin(), value2.end());
+			std::sort(value3.begin(), value3.end());
+			dd[i*m_pDestImg->m_WidthBytes + j * 3] = value1[mid];
+			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = value2[mid];
+			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = value3[mid];
+		}
+	}
+	return TRUE;
 }

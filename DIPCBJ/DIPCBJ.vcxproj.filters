@@ -51,6 +51,9 @@
     <ClInclude Include="CDlgRotate.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CDlgNNMid.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DIPCBJ.cpp">
@@ -81,6 +84,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="CDlgRotate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CDlgNNMid.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

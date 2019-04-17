@@ -24,9 +24,9 @@ public:
 	BOOL ElimateBlackPot();//消除黑点
 	BOOL ElimateNoise();//消除噪声
 	BOOL AdaptiveSmooth();//自适应平滑处理
-	BOOL NNMedFilter();//N*N中值滤波
-	BOOL CrossFilter();//十字形中值滤波
-	BOOL NNMaxFilter();//N*N最大值滤波
+	BOOL NNMedFilter(int);//N*N中值滤波
+	BOOL CrossFilter(int);//十字形中值滤波
+	BOOL NNMaxFilter(int);//N*N最大值滤波
 
 };
 
