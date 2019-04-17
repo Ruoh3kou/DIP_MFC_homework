@@ -47,13 +47,15 @@
 #define ID_Gray_Window                  32807
 #define ID_Gray_PolyLine                32812
 #define ID_Gray_Equal                   32815
+#define ID_SMOOTH_ElimateBlackPot       32821
+#define ID_SMOOTH_ElimateNoise          32822
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
-#define _APS_NEXT_COMMAND_VALUE         32816
+#define _APS_NEXT_COMMAND_VALUE         32826
 #define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
