@@ -4,7 +4,7 @@ class LImageProc
 public:
 	LImageProc();
 	~LImageProc();
-	class LImage *m_pSrcImg, *m_pDestImg;
+	class LImage* m_pSrcImg, * m_pDestImg;
 	BOOL ImageIsValid();
 	BOOL FlipH();  //水平镜像
 	BOOL FlipV();  //垂直镜像
@@ -19,7 +19,7 @@ public:
 	BOOL PolylineGray();
 	BOOL GrayEqual(); 	// 灰度均衡化
 	// 得到直方图（灰级概率Pr)
-	void GetHist(float *prR, float *prG, float *prB);
+	void GetHist(float* prR, float* prG, float* prB);
 	/* -- 平滑处理 --*/
 	BOOL ElimateBlackPot();//消除黑点
 	BOOL ElimateNoise();//消除噪声
@@ -27,6 +27,7 @@ public:
 	BOOL NNMedFilter(int);//N*N中值滤波
 	BOOL CrossFilter(int);//十字形中值滤波
 	BOOL NNMaxFilter(int);//N*N最大值滤波
+	BOOL ADDNoise();// 添加噪声
 
 };
 

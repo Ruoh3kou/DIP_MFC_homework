@@ -206,7 +206,9 @@
     <ClCompile Include="DIPCBJDoc.cpp" />
     <ClCompile Include="DIPCBJView.cpp" />
     <ClCompile Include="LImage.cpp" />
-    <ClCompile Include="LImageProc.cpp" />
+    <ClCompile Include="LImageProc.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Level3</WarningLevel>
+    </ClCompile>
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

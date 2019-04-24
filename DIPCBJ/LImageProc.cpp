@@ -26,15 +26,15 @@ BOOL LImageProc::FlipH()
 {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j += 3)
 		{
 			for (int k = 0; k < 3; k++)
 			{
-				dd[i*m_pDestImg->m_WidthBytes + j + k] = sd[i*m_pDestImg->m_WidthBytes + m_pDestImg->m_WidthBytes - j + k - 3];
+				dd[i * m_pDestImg->m_WidthBytes + j + k] = sd[i * m_pDestImg->m_WidthBytes + m_pDestImg->m_WidthBytes - j + k - 3];
 			}
 		}
 	}
@@ -46,15 +46,15 @@ BOOL LImageProc::FlipV()
 {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j += 3)
 		{
-			dd[i*m_pDestImg->m_WidthBytes + j] = sd[(m_pDestImg->m_Height - i - 1)*m_pDestImg->m_WidthBytes + j];
-			dd[i*m_pDestImg->m_WidthBytes + j + 1] = sd[(m_pDestImg->m_Height - i - 1)*m_pDestImg->m_WidthBytes + j + 1];
-			dd[i*m_pDestImg->m_WidthBytes + j + 2] = sd[(m_pDestImg->m_Height - i - 1)*m_pDestImg->m_WidthBytes + j + 2];
+			dd[i * m_pDestImg->m_WidthBytes + j] = sd[(m_pDestImg->m_Height - i - 1) * m_pDestImg->m_WidthBytes + j];
+			dd[i * m_pDestImg->m_WidthBytes + j + 1] = sd[(m_pDestImg->m_Height - i - 1) * m_pDestImg->m_WidthBytes + j + 1];
+			dd[i * m_pDestImg->m_WidthBytes + j + 2] = sd[(m_pDestImg->m_Height - i - 1) * m_pDestImg->m_WidthBytes + j + 2];
 		}
 	}
 
@@ -65,9 +65,9 @@ BOOL LImageProc::FlipV()
 BOOL LImageProc::Stretch(float aW, float aH)
 {
 	if (!ImageIsValid()) return FALSE;
-	m_pDestImg->Create((int)m_pSrcImg->m_Width*aW, (int)m_pSrcImg->m_Height*aH);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	m_pDestImg->Create((int)m_pSrcImg->m_Width * aW, (int)m_pSrcImg->m_Height * aH);
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	int newX = 1;
 	int newY = 1;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
@@ -76,9 +76,9 @@ BOOL LImageProc::Stretch(float aW, float aH)
 		{
 			newX = (int)(j / aW);
 			newY = (int)(i / aH);
-			dd[i*m_pDestImg->m_WidthBytes + j] = sd[newY*m_pSrcImg->m_WidthBytes + newX];
-			dd[i*m_pDestImg->m_WidthBytes + j + 1] = sd[newY*m_pSrcImg->m_WidthBytes + newX + 1];
-			dd[i*m_pDestImg->m_WidthBytes + j + 2] = sd[newY*m_pSrcImg->m_WidthBytes + newX + 2];
+			dd[i * m_pDestImg->m_WidthBytes + j] = sd[newY * m_pSrcImg->m_WidthBytes + newX];
+			dd[i * m_pDestImg->m_WidthBytes + j + 1] = sd[newY * m_pSrcImg->m_WidthBytes + newX + 1];
+			dd[i * m_pDestImg->m_WidthBytes + j + 2] = sd[newY * m_pSrcImg->m_WidthBytes + newX + 2];
 		}
 	}
 	return TRUE;
@@ -94,8 +94,8 @@ BOOL LImageProc::Translate(int Hori, int Vert)
 	}
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create((int)m_pSrcImg->m_Width, (int)m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 
 	int x, y;
 
@@ -106,9 +106,9 @@ BOOL LImageProc::Translate(int Hori, int Vert)
 		{
 			for (x = 0; x < m_pDestImg->m_Width * 3; x += 3)
 			{
-				dd[y*m_pDestImg->m_WidthBytes + x] = 255;
-				dd[y*m_pDestImg->m_WidthBytes + x + 1] = 255;
-				dd[y*m_pDestImg->m_WidthBytes + x + 2] = 255;
+				dd[y * m_pDestImg->m_WidthBytes + x] = 255;
+				dd[y * m_pDestImg->m_WidthBytes + x + 1] = 255;
+				dd[y * m_pDestImg->m_WidthBytes + x + 2] = 255;
 			}
 		}
 		else if (((y >= Vert) && (Vert >= 0)) || ((y < (m_pDestImg->m_Height + Vert)) && (Vert < 0)))
@@ -119,30 +119,30 @@ BOOL LImageProc::Translate(int Hori, int Vert)
 				if (Hori >= 0) {
 					if (x < 3 * Hori)
 					{
-						dd[y*m_pDestImg->m_WidthBytes + x] = 255;
-						dd[y*m_pDestImg->m_WidthBytes + x + 1] = 255;
-						dd[y*m_pDestImg->m_WidthBytes + x + 2] = 255;
+						dd[y * m_pDestImg->m_WidthBytes + x] = 255;
+						dd[y * m_pDestImg->m_WidthBytes + x + 1] = 255;
+						dd[y * m_pDestImg->m_WidthBytes + x + 2] = 255;
 					}
 					else if (x >= 3 * Hori)
 					{
-						dd[y*m_pDestImg->m_WidthBytes + x] = sd[(y - Vert)*m_pDestImg->m_WidthBytes + x - Hori * 3];
-						dd[y*m_pDestImg->m_WidthBytes + x + 1] = sd[(y - Vert)*m_pDestImg->m_WidthBytes + x - Hori * 3 + 1];
-						dd[y*m_pDestImg->m_WidthBytes + x + 2] = sd[(y - Vert)*m_pDestImg->m_WidthBytes + x - Hori * 3 + 2];
+						dd[y * m_pDestImg->m_WidthBytes + x] = sd[(y - Vert) * m_pDestImg->m_WidthBytes + x - Hori * 3];
+						dd[y * m_pDestImg->m_WidthBytes + x + 1] = sd[(y - Vert) * m_pDestImg->m_WidthBytes + x - Hori * 3 + 1];
+						dd[y * m_pDestImg->m_WidthBytes + x + 2] = sd[(y - Vert) * m_pDestImg->m_WidthBytes + x - Hori * 3 + 2];
 					}
 				}
 				// 左移动
 				else {
 					if (x >= (m_pDestImg->m_Width + 3 * Hori))
 					{
-						dd[y*m_pDestImg->m_WidthBytes + x] = 255;
-						dd[y*m_pDestImg->m_WidthBytes + x + 1] = 255;
-						dd[y*m_pDestImg->m_WidthBytes + x + 2] = 255;
+						dd[y * m_pDestImg->m_WidthBytes + x] = 255;
+						dd[y * m_pDestImg->m_WidthBytes + x + 1] = 255;
+						dd[y * m_pDestImg->m_WidthBytes + x + 2] = 255;
 					}
 					else
 					{
-						dd[y*m_pDestImg->m_WidthBytes + x] = sd[(y - Vert)*m_pDestImg->m_WidthBytes + x - Hori * 3];
-						dd[y*m_pDestImg->m_WidthBytes + x + 1] = sd[(y - Vert)*m_pDestImg->m_WidthBytes + x - Hori * 3 + 1];
-						dd[y*m_pDestImg->m_WidthBytes + x + 2] = sd[(y - Vert)*m_pDestImg->m_WidthBytes + x - Hori * 3 + 2];
+						dd[y * m_pDestImg->m_WidthBytes + x] = sd[(y - Vert) * m_pDestImg->m_WidthBytes + x - Hori * 3];
+						dd[y * m_pDestImg->m_WidthBytes + x + 1] = sd[(y - Vert) * m_pDestImg->m_WidthBytes + x - Hori * 3 + 1];
+						dd[y * m_pDestImg->m_WidthBytes + x + 2] = sd[(y - Vert) * m_pDestImg->m_WidthBytes + x - Hori * 3 + 2];
 					}
 				}
 			}
@@ -158,28 +158,28 @@ BOOL LImageProc::Rotate(int angle)  //旋转，弧度
 	double PI = asin(0.5) * 6;
 	double degree = 1.0 * angle * PI / 180;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	int tX = 0, tY = 0;
 	for (int i = 0; i < m_pSrcImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pSrcImg->m_Width; j++)
 		{
 			//转换到以图像为中心的坐标系，并进行逆旋转
-			tX = (int)(j*cos(degree) - i * sin(degree));
-			tY = (int)(j*sin(degree) + i * cos(degree));
+			tX = (int)(j * cos(degree) - i * sin(degree));
+			tY = (int)(j * sin(degree) + i * cos(degree));
 			if (tX < i * m_pSrcImg->m_Width && tY < m_pSrcImg->m_Height && tX >= 0 && tY >= 0)
 			{
-				dd[(i*m_pSrcImg->m_Width + j) * 3] = sd[(tY*m_pSrcImg->m_Width + tX) * 3];
-				dd[(i*m_pSrcImg->m_Width + j) * 3 + 1] = sd[(tY*m_pSrcImg->m_Width + tX) * 3 + 1];
-				dd[(i*m_pSrcImg->m_Width + j) * 3 + 2] = sd[(tY*m_pSrcImg->m_Width + tX) * 3 + 2];
+				dd[(i * m_pSrcImg->m_Width + j) * 3] = sd[(tY * m_pSrcImg->m_Width + tX) * 3];
+				dd[(i * m_pSrcImg->m_Width + j) * 3 + 1] = sd[(tY * m_pSrcImg->m_Width + tX) * 3 + 1];
+				dd[(i * m_pSrcImg->m_Width + j) * 3 + 2] = sd[(tY * m_pSrcImg->m_Width + tX) * 3 + 2];
 
 			}
 			else if (tX >= i * m_pSrcImg->m_Width || tY >= m_pSrcImg->m_Height || tX < 0 || tY < 0)
 			{
-				dd[(i*m_pSrcImg->m_Width + j) * 3] = 255;
-				dd[(i*m_pSrcImg->m_Width + j) * 3 + 1] = 255;
-				dd[(i*m_pSrcImg->m_Width + j) * 3 + 2] = 255;
+				dd[(i * m_pSrcImg->m_Width + j) * 3] = 255;
+				dd[(i * m_pSrcImg->m_Width + j) * 3 + 1] = 255;
+				dd[(i * m_pSrcImg->m_Width + j) * 3 + 2] = 255;
 
 			}
 		}
@@ -191,20 +191,20 @@ BOOL LImageProc::Rotate(int angle)  //旋转，弧度
 BOOL LImageProc::DoubleThrehold() {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	int T1 = 100;
 	int T2 = 200;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j++)
 		{
-			if (sd[i*m_pDestImg->m_WidthBytes + j] > T1&&sd[i*m_pDestImg->m_WidthBytes + j] < T2) {
-				dd[i*m_pDestImg->m_WidthBytes + j] = 255;
+			if (sd[i * m_pDestImg->m_WidthBytes + j] > T1 && sd[i * m_pDestImg->m_WidthBytes + j] < T2) {
+				dd[i * m_pDestImg->m_WidthBytes + j] = 255;
 			}
 			else
 			{
-				dd[i*m_pDestImg->m_WidthBytes + j] = 0;
+				dd[i * m_pDestImg->m_WidthBytes + j] = 0;
 			}
 
 		}
@@ -216,24 +216,24 @@ BOOL LImageProc::DoubleThrehold() {
 BOOL LImageProc::WindowGray() {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	int L = 100;
 	int U = 220;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j++)
 		{
-			if (sd[i*m_pDestImg->m_WidthBytes + j] > U) {
-				dd[i*m_pDestImg->m_WidthBytes + j] = 255;
+			if (sd[i * m_pDestImg->m_WidthBytes + j] > U) {
+				dd[i * m_pDestImg->m_WidthBytes + j] = 255;
 			}
-			else if (sd[i*m_pDestImg->m_WidthBytes + j] < L)
+			else if (sd[i * m_pDestImg->m_WidthBytes + j] < L)
 			{
-				dd[i*m_pDestImg->m_WidthBytes + j] = 0;
+				dd[i * m_pDestImg->m_WidthBytes + j] = 0;
 			}
 			else
 			{
-				dd[i*m_pDestImg->m_WidthBytes + j] = sd[i*m_pDestImg->m_WidthBytes + j];
+				dd[i * m_pDestImg->m_WidthBytes + j] = sd[i * m_pDestImg->m_WidthBytes + j];
 			}
 
 		}
@@ -245,20 +245,20 @@ BOOL LImageProc::WindowGray() {
 BOOL LImageProc::PolylineGray() {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	int x1 = 130, y1 = 50, x2 = 150, y2 = 200;
 	for (int i = 0; i < m_pDestImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j++)
 		{
-			int x = sd[i*m_pDestImg->m_WidthBytes + j];
+			int x = sd[i * m_pDestImg->m_WidthBytes + j];
 			if (x < x1)
-				dd[i*m_pDestImg->m_WidthBytes + j] = y1 * x / x1;
+				dd[i * m_pDestImg->m_WidthBytes + j] = y1 * x / x1;
 			else if (x >= x1 && x <= x2)
-				dd[i*m_pDestImg->m_WidthBytes + j] = (y2 - y1)*(x - x1) / (x2 - x1) + y1;
+				dd[i * m_pDestImg->m_WidthBytes + j] = (y2 - y1) * (x - x1) / (x2 - x1) + y1;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j] = (255 - y2)*(x - x2) / (255 - x2) + y2;
+				dd[i * m_pDestImg->m_WidthBytes + j] = (255 - y2) * (x - x2) / (255 - x2) + y2;
 		}
 	}
 	return TRUE;
@@ -269,8 +269,8 @@ BOOL LImageProc::GrayEqual() {
 
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	float prR[256], prG[256], prB[256];
 	// 获取R G B的灰级概率
 	GetHist(prR, prG, prB);
@@ -300,29 +300,29 @@ BOOL LImageProc::GrayEqual() {
 	{
 		for (int j = 0; j < m_pDestImg->m_Width * 3; j += 3)
 		{
-			dd[i*m_pDestImg->m_WidthBytes + j] = newB[sd[i*m_pDestImg->m_WidthBytes + j]];
-			dd[i*m_pDestImg->m_WidthBytes + j + 1] = newG[sd[i*m_pDestImg->m_WidthBytes + j + 1]];
-			dd[i*m_pDestImg->m_WidthBytes + j + 2] = newR[sd[i*m_pDestImg->m_WidthBytes + j + 2]];
+			dd[i * m_pDestImg->m_WidthBytes + j] = newB[sd[i * m_pDestImg->m_WidthBytes + j]];
+			dd[i * m_pDestImg->m_WidthBytes + j + 1] = newG[sd[i * m_pDestImg->m_WidthBytes + j + 1]];
+			dd[i * m_pDestImg->m_WidthBytes + j + 2] = newR[sd[i * m_pDestImg->m_WidthBytes + j + 2]];
 		}
 	}
 	return TRUE;
 }
 
 // 得到直方图（灰级概率Pr)
-void LImageProc::GetHist(float *prR, float *prG, float *prB)
+void LImageProc::GetHist(float* prR, float* prG, float* prB)
 {
-	BYTE *sd = m_pSrcImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
 	int counterR[256] = { 0 }, counterG[256] = { 0 }, counterB[256] = { 0 };
 	for (int i = 0; i < m_pSrcImg->m_Height; i++)
 	{
 		for (int j = 0; j < m_pSrcImg->m_Width * 3; j += 3)
 		{
-			counterB[sd[i*m_pSrcImg->m_WidthBytes + j]]++;
-			counterG[sd[i*m_pSrcImg->m_WidthBytes + j + 1]]++;
-			counterR[sd[i*m_pSrcImg->m_WidthBytes + j + 2]]++;
+			counterB[sd[i * m_pSrcImg->m_WidthBytes + j]]++;
+			counterG[sd[i * m_pSrcImg->m_WidthBytes + j + 1]]++;
+			counterR[sd[i * m_pSrcImg->m_WidthBytes + j + 2]]++;
 		}
 	}
-	long long bytes = m_pSrcImg->m_Height*m_pSrcImg->m_Width;
+	long long bytes = m_pSrcImg->m_Height * m_pSrcImg->m_Width;
 	for (int i = 0; i < 256; i++)
 	{
 		prR[i] = counterR[i] / (bytes * 1.0f);
@@ -336,8 +336,8 @@ BOOL LImageProc::ElimateBlackPot()
 {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	for (int i = 1; i < m_pDestImg->m_Height - 1; i++)
 	{
 		for (int j = 1; j < m_pDestImg->m_Width - 1; j++)
@@ -346,46 +346,46 @@ BOOL LImageProc::ElimateBlackPot()
 			int averg_G = 0;
 			int averg_B = 0;
 			averg_B += (
-				sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3]);
+				sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3]);
 			averg_G += (
-				sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + 1]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + 1]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]);
+				sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + 1]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + 1]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]);
 			averg_R += (
-				sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + 2]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + 2]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]);
+				sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + 2]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + 2]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]);
 			if (averg_B == 255 * 8)
-				dd[i*m_pDestImg->m_WidthBytes + j * 3] = 255;
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = 255;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j * 3] = sd[i*m_pDestImg->m_WidthBytes + j * 3];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = sd[i * m_pDestImg->m_WidthBytes + j * 3];
 
 			if (averg_G == 255 * 8)
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = 255;
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = 255;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + 1];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 1];
 
 			if (averg_R == 255 * 8)
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = 255;
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = 255;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + 2];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 2];
 		}
 	}
 	return TRUE;
@@ -396,8 +396,8 @@ BOOL LImageProc::ElimateNoise()
 {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	float Threshold = 127.5;
 	for (int i = 1; i < m_pDestImg->m_Height - 1; i++)
 	{
@@ -407,44 +407,44 @@ BOOL LImageProc::ElimateNoise()
 			float averg_G = 0;
 			float averg_B = 0;
 			averg_B += (
-				sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3]) / 8;
+				sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3]) / 8;
 			averg_G += (
-				sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + 1]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + 1]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]) / 8;
+				sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + 1]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 1]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + 1]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 1]) / 8;
 			averg_R += (
-				sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + 2]
-				+ sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
-				+ sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + 2]
-				+ sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]) / 8;
-			if (abs(averg_B - sd[i*m_pDestImg->m_WidthBytes + j * 3]) > Threshold)
-				dd[i*m_pDestImg->m_WidthBytes + j * 3] = averg_B;
+				sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + 2]
+				+ sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
+				+ sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + 2]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + 2]
+				+ sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + 2]) / 8;
+			if (abs(averg_B - sd[i * m_pDestImg->m_WidthBytes + j * 3]) > Threshold)
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = averg_B;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j * 3] = sd[i*m_pDestImg->m_WidthBytes + j * 3];
-			if (abs(averg_G - sd[i*m_pDestImg->m_WidthBytes + j * 3 + 1]) > Threshold)
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = averg_G;
+				dd[i * m_pDestImg->m_WidthBytes + j * 3] = sd[i * m_pDestImg->m_WidthBytes + j * 3];
+			if (abs(averg_G - sd[i * m_pDestImg->m_WidthBytes + j * 3 + 1]) > Threshold)
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = averg_G;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + 1];
-			if (abs(averg_R - sd[i*m_pDestImg->m_WidthBytes + j * 3 + 2]) > Threshold)
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = averg_R;
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 1];
+			if (abs(averg_R - sd[i * m_pDestImg->m_WidthBytes + j * 3 + 2]) > Threshold)
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = averg_R;
 			else
-				dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + 2];
+				dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + 2];
 		}
 	}
 	return TRUE;
@@ -455,8 +455,8 @@ BOOL LImageProc::AdaptiveSmooth()
 {
 	if (!ImageIsValid()) return FALSE;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
 	int wide = m_pDestImg->m_Width;
 	int height = m_pDestImg->m_Height;
 	int t[9] = { 0 };		//存储临时窗口数据
@@ -475,15 +475,15 @@ BOOL LImageProc::AdaptiveSmooth()
 					continue;
 				}
 				// 第一种领域窗口 九宫格
-				t[0] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[1] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[2] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[3] = sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[4] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[6] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[7] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[8] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[0] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[1] = sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[2] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[3] = sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[4] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[6] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[7] = sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[8] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 9; ++ind)
 					temp += t[ind];
@@ -492,13 +492,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[0] += t[ind] * t[ind] - aver[0] * aver[0];
 
 				// 第二种领域窗口 上两层
-				t[0] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[1] = sd[(i - 2)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[2] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[3] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[4] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[0] = sd[(i - 2) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[1] = sd[(i - 2) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[2] = sd[(i - 2) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[3] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[4] = sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[6] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -507,13 +507,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[1] += t[ind] * t[ind] - aver[1] * aver[1];
 
 				// 第三种领域窗口 左两层
-				t[0] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[1] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[2] = sd[i*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[3] = sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[4] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[6] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[0] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[1] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[2] = sd[i * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[3] = sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[4] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[6] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -522,13 +522,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[2] += t[ind] * t[ind] - aver[2] * aver[2];
 
 				// 第四种领域窗口 下两层
-				t[0] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[1] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[2] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[3] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[4] = sd[(i + 2)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[6] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[0] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[1] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[2] = sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[3] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[4] = sd[(i + 2) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[(i + 2) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[6] = sd[(i + 2) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -537,13 +537,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[3] += t[ind] * t[ind] - aver[3] * aver[3];
 
 				// 第五种领域窗口 右两层
-				t[0] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[1] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[2] = sd[i*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[3] = sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[4] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[6] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[0] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[1] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[2] = sd[i * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[3] = sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[4] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[6] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -552,13 +552,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[4] += t[ind] * t[ind] - aver[4] * aver[4];
 
 				// 第六种领域窗口	右上六边形
-				t[0] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[1] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[2] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[3] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[4] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[0] = sd[(i - 2) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[1] = sd[(i - 2) * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[2] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[3] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[4] = sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[6] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -567,13 +567,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[5] += t[ind] * t[ind] - aver[5] * aver[5];
 
 				// 第七种领域窗口	左上六边形
-				t[0] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[1] = sd[(i - 2)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[2] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[3] = sd[(i - 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[4] = sd[(i - 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[0] = sd[(i - 2) * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[1] = sd[(i - 2) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[2] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[3] = sd[(i - 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[4] = sd[(i - 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[6] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -582,13 +582,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[6] += t[ind] * t[ind] - aver[6] * aver[6];
 
 				// 第八种领域窗口	左下六边形
-				t[0] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[1] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[2] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
-				t[3] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[4] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
-				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[0] = sd[(i + 2) * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[1] = sd[(i + 2) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[2] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 2) * 3 + k];
+				t[3] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[4] = sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[i * m_pDestImg->m_WidthBytes + (j - 1) * 3 + k];
+				t[6] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -597,13 +597,13 @@ BOOL LImageProc::AdaptiveSmooth()
 					K[7] += t[ind] * t[ind] - aver[7] * aver[7];
 
 				// 第九种领域窗口	右下六边形
-				t[0] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[1] = sd[(i + 2)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[2] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
-				t[3] = sd[(i + 1)*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[4] = sd[(i + 1)*m_pDestImg->m_WidthBytes + j * 3 + k];
-				t[5] = sd[i*m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
-				t[6] = sd[i*m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[0] = sd[(i + 2) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[1] = sd[(i + 2) * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[2] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 2) * 3 + k];
+				t[3] = sd[(i + 1) * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[4] = sd[(i + 1) * m_pDestImg->m_WidthBytes + j * 3 + k];
+				t[5] = sd[i * m_pDestImg->m_WidthBytes + (j + 1) * 3 + k];
+				t[6] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
 				temp = 0;
 				for (int ind = 0; ind < 7; ++ind)
 					temp += t[ind];
@@ -637,8 +637,8 @@ BOOL LImageProc::CrossFilter(int n)
 	int wide = m_pDestImg->m_Width;
 	int height = m_pDestImg->m_Height;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE * sd = m_pSrcImg->m_pBits;
+	BYTE * dd = m_pDestImg->m_pBits;
 
 	int n2 = 0;
 	if (n >= 3 && n % 2 == 1)
@@ -662,21 +662,21 @@ BOOL LImageProc::CrossFilter(int n)
 			std::vector<int> value3;
 			for (int ii = i - n2; ii <= i + n2; ii++)
 			{
-				value1.push_back(sd[ii*m_pDestImg->m_WidthBytes + j * 3]);
-				value2.push_back(sd[ii*m_pDestImg->m_WidthBytes + j * 3 + 1]);
-				value3.push_back(sd[ii*m_pDestImg->m_WidthBytes + j * 3 + 2]);
+				value1.push_back(sd[ii * m_pDestImg->m_WidthBytes + j * 3]);
+				value2.push_back(sd[ii * m_pDestImg->m_WidthBytes + j * 3 + 1]);
+				value3.push_back(sd[ii * m_pDestImg->m_WidthBytes + j * 3 + 2]);
 			}
 			for (int jj = j - n2; jj <= j + n2; jj++) {
-				value1.push_back(sd[i*m_pDestImg->m_WidthBytes + jj * 3]);
-				value2.push_back(sd[i*m_pDestImg->m_WidthBytes + jj * 3 + 1]);
-				value3.push_back(sd[i*m_pDestImg->m_WidthBytes + jj * 3 + 2]);
+				value1.push_back(sd[i * m_pDestImg->m_WidthBytes + jj * 3]);
+				value2.push_back(sd[i * m_pDestImg->m_WidthBytes + jj * 3 + 1]);
+				value3.push_back(sd[i * m_pDestImg->m_WidthBytes + jj * 3 + 2]);
 			}
 			std::sort(value1.begin(), value1.end());
 			std::sort(value2.begin(), value2.end());
 			std::sort(value3.begin(), value3.end());
-			dd[i*m_pDestImg->m_WidthBytes + j * 3] = value1[mid];
-			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = value2[mid];
-			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = value3[mid];
+			dd[i * m_pDestImg->m_WidthBytes + j * 3] = value1[mid];
+			dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = value2[mid];
+			dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = value3[mid];
 		}
 	}
 	return TRUE;
@@ -690,8 +690,8 @@ BOOL LImageProc::NNMaxFilter(int n)
 	int wide = m_pDestImg->m_Width;
 	int height = m_pDestImg->m_Height;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE * sd = m_pSrcImg->m_pBits;
+	BYTE * dd = m_pDestImg->m_pBits;
 
 	int n2 = 0;
 	if (n >= 3 && n % 2 == 1)
@@ -714,18 +714,39 @@ BOOL LImageProc::NNMaxFilter(int n)
 			std::vector<int> value3;
 			for (int ii = i - n2; ii <= i + n2; ii++)
 				for (int jj = j - n2; jj <= j + n2; jj++) {
-					value1.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3]);
-					value2.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 1]);
-					value3.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 2]);
+					value1.push_back(sd[ii * m_pDestImg->m_WidthBytes + jj * 3]);
+					value2.push_back(sd[ii * m_pDestImg->m_WidthBytes + jj * 3 + 1]);
+					value3.push_back(sd[ii * m_pDestImg->m_WidthBytes + jj * 3 + 2]);
 				}
 			std::sort(value1.begin(), value1.end());
 			std::sort(value2.begin(), value2.end());
 			std::sort(value3.begin(), value3.end());
-			dd[i*m_pDestImg->m_WidthBytes + j * 3] = value1.front();
-			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = value2.front();
-			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = value3.front();
+			dd[i * m_pDestImg->m_WidthBytes + j * 3] = value1.front();
+			dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = value2.front();
+			dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = value3.front();
 		}
 	}
+	return TRUE;
+}
+BOOL LImageProc::ADDNoise()
+{
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
+	float Threshold = 127.5;
+	for (int i = 0; i < m_pDestImg->m_Height; i++)
+		for (int j = 0; j < m_pDestImg->m_Width; j++)
+			for (int k = 0; k < 3; k++)
+			{
+				// 生成0-10的数字，若为奇数则噪。
+				int jud = rand() % 11;
+				if ((jud & 1) != 0) {
+					dd[i * m_pDestImg->m_WidthBytes + j * 3 + k] = 0;
+				}
+				else
+					dd[i * m_pDestImg->m_WidthBytes + j * 3 + k] = sd[i * m_pDestImg->m_WidthBytes + j * 3 + k];
+			}
 	return TRUE;
 }
 //N*N中值滤波
@@ -737,8 +758,8 @@ BOOL LImageProc::NNMedFilter(int n)
 	int wide = m_pDestImg->m_Width;
 	int height = m_pDestImg->m_Height;
 	m_pDestImg->Create(m_pSrcImg->m_Width, m_pSrcImg->m_Height);
-	BYTE *sd = m_pSrcImg->m_pBits;
-	BYTE *dd = m_pDestImg->m_pBits;
+	BYTE * sd = m_pSrcImg->m_pBits;
+	BYTE * dd = m_pDestImg->m_pBits;
 
 	int n2 = 0;
 	if (n >= 3 && n % 2 == 1)
@@ -762,16 +783,16 @@ BOOL LImageProc::NNMedFilter(int n)
 			std::vector<int> value3;
 			for (int ii = i - n2; ii <= i + n2; ii++)
 				for (int jj = j - n2; jj <= j + n2; jj++) {
-					value1.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3]);
-					value2.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 1]);
-					value3.push_back(sd[ii*m_pDestImg->m_WidthBytes + jj * 3 + 2]);
+					value1.push_back(sd[ii * m_pDestImg->m_WidthBytes + jj * 3]);
+					value2.push_back(sd[ii * m_pDestImg->m_WidthBytes + jj * 3 + 1]);
+					value3.push_back(sd[ii * m_pDestImg->m_WidthBytes + jj * 3 + 2]);
 				}
 			std::sort(value1.begin(), value1.end());
 			std::sort(value2.begin(), value2.end());
 			std::sort(value3.begin(), value3.end());
-			dd[i*m_pDestImg->m_WidthBytes + j * 3] = value1[mid];
-			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 1] = value2[mid];
-			dd[i*m_pDestImg->m_WidthBytes + j * 3 + 2] = value3[mid];
+			dd[i * m_pDestImg->m_WidthBytes + j * 3] = value1[mid];
+			dd[i * m_pDestImg->m_WidthBytes + j * 3 + 1] = value2[mid];
+			dd[i * m_pDestImg->m_WidthBytes + j * 3 + 2] = value3[mid];
 		}
 	}
 	return TRUE;
