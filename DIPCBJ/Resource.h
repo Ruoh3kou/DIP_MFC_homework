@@ -60,13 +60,23 @@
 #define ID_Cross                        32833
 #define ID_32834                        32834
 #define ID_AddNoise                     32835
+#define ID_32836                        32836
+#define ID_32837                        32837
+#define ID_EdgeTwoDir                   32838
+#define ID_32839                        32839
+#define ID_Threadhold                   32840
+#define ID_Threshold                    32841
+#define ID_32842                        32842
+#define ID_Robot                        32843
+#define ID_32844                        32844
+#define ID_Sobel                        32845
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32836
+#define _APS_NEXT_COMMAND_VALUE         32846
 #define _APS_NEXT_CONTROL_VALUE         1006
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

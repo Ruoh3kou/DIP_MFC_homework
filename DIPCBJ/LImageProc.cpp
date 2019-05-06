@@ -749,6 +749,7 @@ BOOL LImageProc::ADDNoise()
 			}
 	return TRUE;
 }
+
 //N*N中值滤波
 BOOL LImageProc::NNMedFilter(int n)
 {
@@ -796,4 +797,159 @@ BOOL LImageProc::NNMedFilter(int n)
 		}
 	}
 	return TRUE;
+}
+
+// 双向微分
+BOOL LImageProc::EdgeTwoDir()
+{
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create((int)m_pSrcImg->m_Width, (int)m_pSrcImg->m_Height);
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
+	for (int i = 1; i < m_pDestImg->m_Height - 1; i++)
+	{
+		for (int j = 3; j < m_pDestImg->m_WidthBytes - 3; j++)
+		{
+			int p1 = 0, p2 = 0;
+			p1 = sd[(i - 1) * m_pDestImg->m_WidthBytes + j - 3] - sd[(i - 1) * m_pDestImg->m_WidthBytes + j];
+			p2 = sd[(i - 1) * m_pDestImg->m_WidthBytes + j] - sd[i * m_pDestImg->m_WidthBytes + j];
+			dd[(i - 1) * m_pDestImg->m_WidthBytes + j] = (int)sqrt(p1 * p1 + p2 * p2);
+		}
+	}
+	return TRUE;
+}
+// 门限梯度
+BOOL LImageProc::Threshold()
+{
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create((int)m_pSrcImg->m_Width, (int)m_pSrcImg->m_Height);
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
+	for (int i = 1; i < m_pDestImg->m_Height - 1; i++)
+	{
+		for (int j = 3; j < m_pDestImg->m_WidthBytes - 3; j++)
+		{
+			int p1 = 0, p2 = 0;
+			p1 = sd[(i - 1) * m_pDestImg->m_WidthBytes + j - 3] - sd[(i - 1) * m_pDestImg->m_WidthBytes + j];
+			p2 = sd[(i - 1) * m_pDestImg->m_WidthBytes + j] - sd[i * m_pDestImg->m_WidthBytes + j];
+			int temp = (int)sqrt(p1 * p1 + p2 * p2);
+			if (temp >= 30) {
+				if ((temp + 100) > 255)
+					dd[(i - 1) * m_pDestImg->m_WidthBytes + j] = 255;
+				else
+					dd[(i - 1) * m_pDestImg->m_WidthBytes + j] = temp + 100;
+			}
+			else
+				dd[(i - 1) * m_pDestImg->m_WidthBytes + j] = sd[(i - 1) * m_pDestImg->m_WidthBytes + j];
+		}
+	}
+	return TRUE;
+}
+
+BOOL LImageProc::Robert()
+{
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create((int)m_pSrcImg->m_Width, (int)m_pSrcImg->m_Height);
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
+
+	int p[4];   //Robert算子
+	for (int i = 0; i < m_pDestImg->m_Height - 1; i++)
+	{
+		for (int j = 0; j < m_pDestImg->m_WidthBytes - 3; j++)
+		{
+			p[0] = sd[i * m_pDestImg->m_WidthBytes + j];
+			p[1] = sd[i * m_pDestImg->m_WidthBytes + j + 3];
+			p[2] = sd[(i + 1) * m_pDestImg->m_WidthBytes + j];
+			p[3] = sd[(i + 1) * m_pDestImg->m_WidthBytes + j + 3];
+			dd[i * m_pDestImg->m_WidthBytes + j] = (int)sqrt((p[0] - p[3]) * (p[0] - p[3]) + (p[1] - p[2]) * (p[1] - p[2]));
+		}
+	}
+	return TRUE;
+}
+
+BOOL LImageProc::Sobel()
+{
+	if (!ImageIsValid()) return FALSE;
+	m_pDestImg->Create((int)m_pSrcImg->m_Width, (int)m_pSrcImg->m_Height);
+	BYTE* sd = m_pSrcImg->m_pBits;
+	BYTE* dd = m_pDestImg->m_pBits;
+
+	int tempH;  //模板高度
+	int tempW;  //模板宽度
+	float tempC;  //模板系数
+	int tempMY;   //模板中心元素Y坐标
+	int tempMX;   //模板中心元素X坐标
+	float Template[9];   //模板数组
+	BYTE* p_temp1 = new BYTE[m_pSrcImg->m_Height * m_pSrcImg->m_WidthBytes];
+	BYTE* p_temp2 = new BYTE[m_pSrcImg->m_Height * m_pSrcImg->m_WidthBytes];
+	//将缓存中的图像复制到原图数据区
+	memcpy(p_temp1, sd, m_pSrcImg->m_WidthBytes * m_pSrcImg->m_Height);
+	memcpy(p_temp2, sd, m_pSrcImg->m_WidthBytes * m_pSrcImg->m_Height);
+	//设置Sobel模板参数
+	tempW = 3;
+	tempH = 3;
+	tempC = 1.0;
+	tempMY = 1;
+	tempMX = 1;
+	Template[0] = -1.0;
+	Template[1] = -2.0;
+	Template[2] = -1.0;
+	Template[3] = 0.0;
+	Template[4] = 0.0;
+	Template[5] = 0.0;
+	Template[6] = 1.0;
+	Template[7] = 2.0;
+	Template[8] = 1.0;
+	Templat(p_temp1, m_pSrcImg->m_WidthBytes, m_pSrcImg->m_Height, tempH, tempW, tempMX, tempMY, Template, tempC);
+	//设置Sobel模板参数
+	Template[0] = -1.0;
+	Template[1] = 0.0;
+	Template[2] = 1.0;
+	Template[3] = -2.0;
+	Template[4] = 0.0;
+	Template[5] = 2.0;
+	Template[6] = -1.0;
+	Template[7] = 0.0;
+	Template[8] = 1.0;
+	Templat(p_temp2, m_pSrcImg->m_WidthBytes, m_pSrcImg->m_Height, tempH, tempW, tempMX, tempMY, Template, tempC);
+	//求两幅缓存图像的最大值
+	for (int j = 0; j < m_pSrcImg->m_Height; j++)
+		for (int i = 0; i < m_pSrcImg->m_WidthBytes; i++)
+			if (p_temp2[j * m_pSrcImg->m_WidthBytes + i] > p_temp1[j * m_pSrcImg->m_WidthBytes + i])
+				p_temp1[j * m_pSrcImg->m_WidthBytes + i] = p_temp2[j * m_pSrcImg->m_WidthBytes + i];
+	memcpy(dd, p_temp1, m_pSrcImg->m_Height * m_pSrcImg->m_WidthBytes);  // 复制处理后的图像
+	delete[]p_temp1;  //删除暂时分配内存
+	delete[]p_temp2;  //删除暂时分配内存
+	return TRUE;
+}
+
+void LImageProc::Templat(BYTE * m_pdata, int DibWidth, int height, int tempH, int tempW, int tempMX, int tempMY, float* fpArray, float fCoef)
+{
+	// 将原图复制到新缓冲区
+	BYTE* p_temp = new BYTE[DibWidth * height];
+	memcpy(p_temp, m_pdata, DibWidth * height);
+	float fResult;
+	for (int i = tempMY; i < height - tempH + tempMY + 1; i++)
+		for (int j = 3 * tempMX; j < DibWidth - 3 * tempW + 3 * tempMX + 1; j++)
+		{
+			//计算像素值
+			fResult = 0;
+			for (int k = 0; k < tempH; k++)
+				for (int l = 0; l < tempW; l++)
+					fResult = fResult + m_pdata[(i - tempMY + k) * DibWidth + (j - 3 * tempMX + l * 3)] * fpArray[k * tempW + l];
+			//乘上系数
+			fResult *= fCoef;
+			//取绝对值
+			fResult = (float)fabs(fResult);
+			//判断是否超过255
+			if (fResult > 255)
+				//若超过255，直接赋值为255
+				p_temp[i * DibWidth + j] = 255;
+			else
+				//未超过255，赋值为计算结果
+				p_temp[i * DibWidth + j] = (int)(fResult + 0.5);
+		}
+	memcpy(m_pdata, p_temp, DibWidth * height);   //复制处理后的图像
+	delete[]p_temp;
 }

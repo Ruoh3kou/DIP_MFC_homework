@@ -17,17 +17,23 @@ public:
 	BOOL WindowGray();
 	// 折现变换
 	BOOL PolylineGray();
-	BOOL GrayEqual(); 	// 灰度均衡化
+	BOOL GrayEqual(); 		//灰度均衡化
 	// 得到直方图（灰级概率Pr)
 	void GetHist(float* prR, float* prG, float* prB);
 	/* -- 平滑处理 --*/
-	BOOL ElimateBlackPot();//消除黑点
-	BOOL ElimateNoise();//消除噪声
-	BOOL AdaptiveSmooth();//自适应平滑处理
-	BOOL NNMedFilter(int);//N*N中值滤波
-	BOOL CrossFilter(int);//十字形中值滤波
-	BOOL NNMaxFilter(int);//N*N最大值滤波
-	BOOL ADDNoise();// 添加噪声
-
+	BOOL ElimateBlackPot();	//消除黑点
+	BOOL ElimateNoise();		//消除噪声
+	BOOL AdaptiveSmooth();	//自适应平滑处理
+	BOOL NNMedFilter(int);	//N*N中值滤波
+	BOOL CrossFilter(int);	//十字形中值滤波
+	BOOL NNMaxFilter(int);	//N*N最大值滤波
+	BOOL ADDNoise();			//添加噪声
+	/* -- 边缘处理 --*/
+	BOOL EdgeTwoDir();		//双向微分
+	BOOL Threshold();		//门限梯度
+	BOOL Robert();			//罗伯特算子
+	BOOL Sobel();			//索波尔算子
+	//求卷积模板函数
+	void Templat(BYTE* m_pdata, int DibWidth, int height, int tempH, int tempW, int tempMX, int tempMY, float* fpArray, float fCoef);
 };
 
